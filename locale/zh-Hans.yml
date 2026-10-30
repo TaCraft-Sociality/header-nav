@@ -1,0 +1,239 @@
+ernestdefoe-header-nav:
+  admin:
+    intro: >-
+      选择哪些链接显示在顶部导航，哪些保留在论坛菜单中，哪些隐藏；可以重命名、
+      更换图标、拖动排序，以及添加你自己的链接。编辑器会在论坛前台打开，因为论坛
+      的菜单就在那里。
+    open_editor: 打开导航编辑器
+  forum:
+    label: "论坛导航"
+    more: "更多"
+    mobile_menu: "菜单"
+    editor:
+      title: 导航
+      intro: >-
+        这里列出了论坛菜单提供的全部项目。拖动行可调整顺序，重命名，更换图标，
+        并选择它显示在哪里。排序会同时应用于顶部导航和菜单。
+      denied: 只有管理员可以编辑导航。
+      place_header: 顶部
+      place_header_help: "— 显示在顶部导航，并从菜单中移除。"
+      place_menu: 菜单
+      place_menu_help: "— 保留在论坛菜单中（侧边栏，或主题的胶囊/磁贴）。"
+      place_hidden: 隐藏
+      place_hidden_help: "— 任何地方都不显示。"
+      placement: 此链接显示的位置
+      drag: 拖动排序
+      label: 名称
+      icon: 图标（Font Awesome 类名）
+      url: 地址
+      url_placeholder: "/p/privacy 或 https://example.com"
+      url_invalid: 请使用本站路径（以 / 开头）、http(s) 地址或 mailto。
+      new_tab: 在新标签页打开
+      missing: 论坛当前未提供此项 —— 其扩展可能已被禁用。启用后会恢复。
+      not_a_link: 这是一个按钮而非链接，因此只能保留在菜单或隐藏，不能放入顶部导航。
+      remove: 移除此链接
+      add_link: 添加链接
+      direct_label: 顶部导航显示的链接数
+      direct_help: 在其余链接收入「更多」菜单之前，顶部导航显示多少个链接。窗口较窄时会显示更少。
+      logo_label: Logo 高度（像素）
+      logo_help: 可选。留空则保持主题的 Logo 尺寸。较小的 Logo 会给顶部链接留出更多空间；手机上最多 40 像素。
+      logo_placeholder: 主题默认
+      save: 保存导航
+      saved: 导航已保存。
+      save_failed: 导航保存失败。
+      reset: 重新开始
+      reset_confirm: 返回初始导航？在你点击「保存」之前，这里的更改不会生效。
+      unsaved: 有未保存的更改
+      mega_make: 巨型菜单
+      mega_edit: 编辑巨型菜单
+      mega_add: 添加巨型菜单
+      mega_import: 导入巨型菜单
+      mega_import_failed: 该文件不是从 Header Nav 导出的巨型菜单。
+      mega_load_failed: 巨型菜单加载失败，保存时将保持原样。
+      mega_untitled: 巨型菜单
+      mega_copy_of: "{title}（副本）"
+      mega_row_help: 带有独立顶部项的巨型菜单。
+      mega_off: 已关闭。
+      mega_needs_header: 只有当此链接位于顶部导航时，其巨型菜单才会显示。
+      mega_delete_confirm: 删除此巨型菜单？保存后即消失。
+      mega_problems: "巨型菜单「{title}」有以下字段需要修正后才能保存："
+    mega:
+      go_to: "前往 {label}"
+      search_label: 搜索此菜单
+      search_placeholder: 搜索此菜单…
+      no_results: 没有匹配的链接。
+      close: 关闭菜单
+      dismiss: 忽略
+      greeting_morning: "早上好，{name}"
+      greeting_afternoon: "下午好，{name}"
+      greeting_evening: "晚上好，{name}"
+      greeting_guest: 欢迎！登录或注册以加入讨论。
+    mega_editor:
+      back: 返回导航
+      untitled: 新建巨型菜单
+      enabled: 已开启
+      duplicate: 复制
+      export: 导出
+      delete: 删除
+      preview: 预览
+      preview_desktop: 桌面
+      preview_phone: 手机
+      tab_content: 分类与链接
+      tab_look: 外观
+      tab_extras: 问候与附加内容
+      tab_behaviour: 菜单
+      limits: "最多 {sections} 个分类，每个分类最多 {links} 个链接。拖动把手可排序，或聚焦后使用方向键。"
+      add_section: 添加分类
+      remove_section: 移除此分类
+      section: 分类
+      section_title: 分类标题
+      drag_section: 拖动以排序此分类，或使用方向键
+      accent: 强调色
+      stack: 叠放在上一个分类下方
+      foot_label: 底部按钮文字
+      foot_href: 底部按钮地址
+      add_link: 添加链接
+      link: 链接
+      link_title: 链接标题
+      drag_link: 拖动以移动此链接，或使用方向键
+      link_options: 此链接的更多选项
+      remove_link: 移除此链接
+      link_desc: 描述
+      icon: 图标（Font Awesome 类名）
+      icon_color: 图标颜色
+      badge: 徽章文字
+      badge_color: 徽章颜色
+      new_tab: 在新标签页打开
+      move_to: 移动到分类
+      dest: 前往
+      dest_address: 一个地址…
+      dest_missing: "{dest}（此处未提供）"
+      dest_group_nav: 本站菜单
+      dest_group_account: 账户与搜索
+      dest_group_tags: 标签
+      dest_search: 搜索
+      dest_settings: 设置
+      dest_notifications: 通知
+      dest_login: 登录
+      dest_signup: 注册
+      address: 地址
+      address_placeholder: "/p/privacy 或 https://example.com"
+      color_placeholder: "默认，或 #336699"
+      audience: 谁可以看到
+      aud_all: 所有人
+      aud_guests: 仅访客
+      aud_members: 仅会员
+      aud_groups: 指定用户组
+      problem_groups: 至少选择一个用户组
+      problem_link: 链接需要标题和目标地址
+      style: 菜单样式
+      style_classic: 经典
+      style_soft: 柔和卡片
+      style_rails: 强调竖条
+      style_raised: 浮起卡片
+      style_bands: 标题色带
+      style_underline: 下划线标题
+      style_inset: 内嵌面板
+      band: 分类标题色带
+      band_none: 无
+      band_solid: 纯色
+      band_gradient: 渐变
+      icon_style: 链接图标
+      iconStyle_plain: 朴素
+      iconStyle_soft: 柔色底
+      iconStyle_solid: 实色底
+      density: 间距
+      density_comfortable: 舒适
+      density_compact: 紧凑
+      desc_size: 描述字号
+      descSize_md: 正常
+      descSize_sm: 小
+      descSize_lg: 大
+      cols: 列数
+      width: 桌面宽度
+      border: 边框
+      border_line: 线条
+      border_none: 无
+      border_outline: 描边
+      shadow: 阴影
+      shadow_soft: 柔和
+      shadow_none: 无
+      shadow_strong: 强烈
+      divider: 分类分隔线（粗细）
+      divider_color: 分隔线颜色
+      sep: 链接分隔线（粗细）
+      sep_color: 分隔线颜色
+      texture: 纹理
+      texture_none: 无
+      texture_grain: 细颗粒
+      texture_linen: 编织亚麻
+      texture_dots: 柔和圆点
+      texture_weave: 斜纹
+      texture_graph: 方格纸
+      texture_brushed: 拉丝
+      texture_contour: 等高线
+      texture_paper: 柔纸
+      texture_canvas: 细帆布
+      texture_crosshatch: 交叉线
+      texture_herringbone: 人字纹
+      texture_honeycomb: 蜂窝
+      texture_waves: 柔和波纹
+      texture_strength: 纹理强度
+      mark: 分类图标水印
+      mark_size: 水印大小
+      mark_opacity: 水印强度
+      show: 显示
+      show_desc: 描述
+      show_link_icons: 链接图标
+      show_cat_icons: 分类图标
+      show_badges: 徽章
+      greeting: 问候语
+      greet: "向访客问好（“早上好，Ernest”，附带头像）"
+      greet_guest: 访客问候语
+      greet_guest_placeholder: 欢迎！登录或注册以加入讨论。
+      search: 显示搜索框以筛选此菜单的链接
+      announce: 公告
+      announce_help: 菜单顶部的一行提示。访客可以忽略；更改文字后会再次向所有人显示。
+      announce_text: 文字
+      promo: 推广
+      promo_title: 标题
+      promo_text: 文字
+      promo_button: 按钮文字
+      promo_image: 背景图（https 地址）
+      help: 帮助区块
+      help_title: 标题
+      help_text: 文字
+      help_label: 按钮文字
+      menu_title: 菜单名称
+      menu_icon: 图标（Font Awesome 类名）
+      trigger: 顶部项样式
+      trigger_link: 与其他顶部链接一致
+      trigger_button: 描边按钮
+      open: 打开方式
+      open_hover: 悬停或点击
+      open_click: 仅点击
+      attached_own: 此菜单有独立的顶部项，请在导航列表中放置并排序。
+      attached_to: "此菜单从「{label}」顶部项打开。"
+      starter:
+        title: 探索
+        discuss: 讨论
+        all: 全部讨论
+        all_desc: 所有对话，按最新排序
+        following: 关注中
+        following_desc: 你关注的讨论
+        tags: 标签
+        tags_desc: 按主题浏览
+        account: 你的账户
+        settings: 设置
+        settings_desc: 资料、通知与隐私
+        notifications: 通知
+        notifications_desc: 你错过的内容
+        login: 登录
+        signup: 注册
+        find: 查找
+        search: 搜索
+        search_desc: 讨论、帖子与用户
+  api:
+    mega_invalid: "巨型菜单：{field} 无效。"
+    mega_too_many: "巨型菜单：每个论坛最多 32 个。"
+    mega_too_large: "巨型菜单：菜单过大，无法保存。请缩短部分描述或移除部分链接。"

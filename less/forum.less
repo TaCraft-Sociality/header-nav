@@ -1,0 +1,829 @@
+// ── The forum's navigation, in the header ──────────────────────────────────
+//
+// 🚨 There is no nav container. Each link is its own item in HeaderPrimary, so
+// Flarum's OverflowingList shows what fits and puts the rest in its "..." menu
+// as ordinary labelled rows. A single wrapper collapsed as one blob.
+
+.Header-controls .HeaderNav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 11px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  // 🚨 The header's own control colour, the CSS custom property Sign Up and
+  // Log In use, never `inherit`. A theme can paint the header dark without
+  // changing the text colour inside it; on ernestdefoe.online that drew these
+  // near-black on near-black while the buttons beside them stayed readable.
+  // (A LESS variable would be worse: @header-color does not exist, and an
+  // undefined variable in an extension's LESS 500s every page.)
+  color: var(--header-control-color);
+
+  &:hover,
+  &:focus {
+    // From the text colour, so the hover shows on a dark header as well.
+    // Escaped so LESS passes it through rather than trying to evaluate it.
+    background: ~"color-mix(in srgb, currentColor 12%, transparent)";
+    color: var(--header-control-color);
+    text-decoration: none;
+  }
+}
+
+/*
+ * 🚨 The colour again, at a weight a theme's header-link rule cannot beat.
+ *
+ * Bespoke ships `:root:not([data-theme^="dark"]) .App-header a { color:
+ * inherit }` — three classes and an element — so in light mode it outranked
+ * the rule above and the links went back to near-black on ernestdefoe.online's
+ * dark header. Four classes settles it in every ordering; `!important` would
+ * also beat the site's own custom CSS, which should keep the last word.
+ */
+.App .App-header .Header-controls .HeaderNav-link {
+  &,
+  &:hover,
+  &:focus {
+    color: var(--header-control-color);
+  }
+}
+
+/*
+ * 🚨 Icons only on a narrow desktop, so the links that matter stay on the row.
+ *
+ * Between the drawer and about 1100px the logo and the account controls leave
+ * room for one labelled link; on ernestdefoe.online at 900px only Discussions
+ * survived, and the knowledge base and tracker are what that forum is for.
+ * Without labels the first links fit as icons, each carrying its name as a
+ * title and an aria-label. The More menu keeps its labels: it has the room.
+ */
+@media (min-width: 768px) and (max-width: 1099.98px) {
+  .Header-controls > li > .HeaderNav-link,
+  .Header-controls > li > .HeaderMega > .HeaderNav-link {
+    padding: 7px 9px;
+
+    .HeaderNav-label {
+      display: none;
+    }
+
+    .HeaderNav-icon {
+      opacity: 1;
+      font-size: 1.05em;
+    }
+  }
+}
+
+.HeaderNav-icon {
+  font-size: 0.95em;
+  opacity: 0.75;
+}
+
+// In the overflow menu the links are rows, not pills.
+.Header-controls .Dropdown-menu .HeaderNav-link {
+  display: flex;
+  width: 100%;
+  border-radius: 0;
+  padding: 9px 15px;
+}
+
+/*
+ * 🚨 The overflow menu is a light (or dark) card of its own, not the header:
+ * its rows take the menu's text colour, at the weight of the rule above that
+ * paints header links. Without this a dark header (Masthead, Bespoke) drew
+ * them in its white on the white menu.
+ */
+.App .App-header .Header-controls .Dropdown-menu .HeaderNav-link {
+  &,
+  &:hover,
+  &:focus {
+    color: var(--text-color);
+  }
+
+  &:hover,
+  &:focus {
+    background: var(--control-bg);
+  }
+}
+
+/*
+ * 🚨 On a phone the header links are rows in Flarum's drawer.
+ *
+ * They used to be hidden here and the pill row was left to carry them. Now a
+ * link that is in the header is taken OUT of the menu, so hiding it on a phone
+ * would hide it everywhere: the drawer is where Flarum puts the header's items
+ * on a narrow screen, and that is where they belong.
+ */
+@media (max-width: 767.98px) {
+  .App-drawer .Header-controls .HeaderNav-link {
+    display: flex;
+    width: 100%;
+    border-radius: 0;
+    padding: 10px 15px;
+  }
+}
+
+// ── Mega menus ──────────────────────────────────────────────────────────────
+//
+// 🚨 No opening animation, by request, and no transitions at all: the panel is
+// there or it is not, which also leaves nothing for reduced motion to stop.
+// Every colour is one of the forum's own custom properties, so light, dark
+// and a colored header all follow; an admin's colours arrive as --hm-*
+// properties that the server and the browser both checked.
+
+.HeaderMega {
+  display: inline-block;
+}
+
+.HeaderMega-trigger {
+  font-family: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.HeaderMega-caret {
+  font-size: 0.7em;
+  opacity: 0.6;
+
+  [aria-expanded='true'] > & {
+    transform: rotate(180deg);
+  }
+}
+
+// An outlined button instead of a plain header link.
+.App .App-header .Header-controls .HeaderMega-trigger--button {
+  border: 1px solid ~"color-mix(in srgb, currentColor 45%, transparent)";
+}
+
+.HeaderMega-panel {
+  --hm-accent: var(--primary-color);
+  --hm-gap: 22px;
+  position: fixed;
+  z-index: 10;
+  isolation: isolate;
+  overflow: auto;
+  overscroll-behavior: contain;
+  box-sizing: border-box;
+  padding: var(--hm-gap);
+  text-align: left;
+  white-space: normal;
+  font-size: 14px;
+  font-weight: normal;
+  color: var(--text-color);
+  background: var(--body-bg);
+  border: 1px solid var(--control-bg);
+  border-radius: 12px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.16);
+}
+
+.HeaderMega--compact {
+  --hm-gap: 14px;
+}
+
+.HeaderMega--border-none {
+  border: 0;
+}
+
+.HeaderMega--border-outline {
+  border: 2px solid var(--primary-color);
+}
+
+.HeaderMega--shadow-none {
+  box-shadow: none;
+}
+
+.HeaderMega--shadow-strong {
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.32);
+}
+
+/*
+ * 🚨 Inside the header, the header's own colour rules reach the panel: Bespoke
+ * sets header links to `inherit`, and a colored header's drawer paints links,
+ * buttons and fields white. The panel is a card of its own, so its contents
+ * take the card's colours back, at a weight those rules do not reach.
+ */
+.App .App-header .HeaderMega-panel {
+  a,
+  .HeaderMega-link {
+    color: var(--text-color);
+  }
+
+  .Button {
+    width: auto;
+    color: var(--button-color);
+    background: var(--button-bg);
+  }
+
+  .Button--primary {
+    color: var(--button-primary-color);
+    background: var(--button-primary-bg);
+  }
+
+  .Button--link {
+    color: var(--muted-color);
+    background: transparent;
+  }
+
+  .FormControl {
+    color: var(--control-color);
+    background: var(--control-bg);
+  }
+
+  .HeaderMega-promo--image,
+  .HeaderMega-promo--image a {
+    color: #fff;
+  }
+}
+
+.HeaderMega-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin-bottom: var(--hm-gap);
+
+  &:has(> .HeaderMega-close:only-child) {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    margin: 0;
+  }
+}
+
+.HeaderMega-greet {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.05rem;
+  font-weight: 600;
+
+  .Avatar {
+    --size: 36px;
+  }
+}
+
+.HeaderMega-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.HeaderMega-search {
+  flex: 0 1 240px;
+  margin-left: auto;
+}
+
+.HeaderMega-close {
+  margin-left: auto;
+
+  .HeaderMega-search + & {
+    margin-left: 0;
+  }
+}
+
+.HeaderMega-announce {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: var(--hm-gap);
+  padding: 6px 6px 6px 14px;
+  border-radius: 8px;
+  background: ~"color-mix(in srgb, var(--primary-color) 12%, transparent)";
+
+  > a,
+  > span {
+    flex: 1 1 auto;
+    font-weight: 600;
+  }
+}
+
+.HeaderMega-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--hm-cols), minmax(0, 1fr));
+  gap: var(--hm-gap);
+}
+
+.HeaderMega-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hm-gap);
+  min-width: 0;
+}
+
+.HeaderMega-cat {
+  position: relative;
+}
+
+.HeaderMega-catTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted-color);
+
+  .icon {
+    color: var(--hm-accent);
+  }
+}
+
+.HeaderMega-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.HeaderMega-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--control-bg);
+    text-decoration: none;
+  }
+
+  .HeaderMega--compact & {
+    padding: 5px 8px;
+  }
+}
+
+.HeaderMega-icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  margin-top: 1px;
+  color: var(--hm-icon, var(--hm-accent));
+
+  .HeaderMega--icon-soft &,
+  .HeaderMega--icon-solid & {
+    width: 32px;
+    height: 32px;
+    margin: -2px 0;
+    border-radius: 8px;
+    background: ~"color-mix(in srgb, var(--hm-icon, var(--hm-accent)) 14%, transparent)";
+  }
+
+  .HeaderMega--icon-solid & {
+    color: #fff;
+    background: var(--hm-icon, var(--hm-accent));
+  }
+}
+
+.HeaderMega-text {
+  min-width: 0;
+}
+
+.HeaderMega-title {
+  display: block;
+  font-weight: 600;
+}
+
+.HeaderMega-desc {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.85em;
+  line-height: 1.4;
+  color: var(--muted-color);
+
+  .HeaderMega--desc-sm & {
+    font-size: 0.78em;
+  }
+
+  .HeaderMega--desc-lg & {
+    font-size: 0.95em;
+  }
+}
+
+.HeaderMega-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  vertical-align: 1px;
+  font-size: 0.72em;
+  font-weight: 700;
+  color: var(--hm-badge, var(--primary-color));
+  background: ~"color-mix(in srgb, var(--hm-badge, var(--primary-color)) 15%, transparent)";
+}
+
+.HeaderMega-catFoot {
+  margin-top: 8px;
+}
+
+.HeaderMega-empty {
+  margin: 0;
+  color: var(--muted-color);
+}
+
+.HeaderMega-promo {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  min-height: 180px;
+  padding: 18px;
+  border-radius: 10px;
+  background: ~"color-mix(in srgb, var(--primary-color) 10%, transparent)";
+
+  p {
+    margin: 0 0 12px;
+  }
+}
+
+.HeaderMega-promoImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// Text over a photo needs a shade behind it, whatever the photo.
+.HeaderMega-promo--image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.15));
+}
+
+.HeaderMega-promoBody {
+  position: relative;
+  z-index: 1;
+}
+
+.HeaderMega-promoTitle {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+}
+
+.HeaderMega-help {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: var(--hm-gap);
+  padding: 12px 14px;
+  border: 1px solid var(--control-bg);
+  border-radius: 10px;
+
+  > .icon {
+    color: var(--primary-color);
+  }
+}
+
+.HeaderMega-helpText {
+  flex: 1 1 auto;
+
+  strong {
+    margin-right: 6px;
+  }
+}
+
+// Dividers between columns, separators between links.
+.HeaderMega--dividers .HeaderMega-col + .HeaderMega-col {
+  padding-left: var(--hm-gap);
+  border-left: var(--hm-div) solid var(--hm-div-color, var(--control-bg));
+}
+
+.HeaderMega--seps .HeaderMega-links > li + li {
+  border-top: var(--hm-sep) solid var(--hm-sep-color, var(--control-bg));
+}
+
+// The category's icon, large and faint in its corner.
+.HeaderMega--mark .HeaderMega-cat {
+  overflow: hidden;
+
+  > :not(.HeaderMega-mark) {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.HeaderMega-mark {
+  position: absolute;
+  right: -0.1em;
+  bottom: -0.15em;
+  font-size: var(--hm-mark-size);
+  opacity: var(--hm-mark-opacity);
+  color: var(--hm-accent);
+  pointer-events: none;
+}
+
+// ── The seven styles ──
+.HeaderMega--soft,
+.HeaderMega--raised,
+.HeaderMega--inset {
+  .HeaderMega-cat {
+    padding: 14px;
+    border-radius: 10px;
+  }
+}
+
+.HeaderMega--soft .HeaderMega-cat {
+  background: ~"color-mix(in srgb, var(--hm-accent) 7%, transparent)";
+}
+
+.HeaderMega--raised .HeaderMega-cat {
+  background: var(--body-bg);
+  border: 1px solid var(--control-bg);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.HeaderMega--inset {
+  background: var(--control-bg);
+
+  .HeaderMega-cat {
+    background: var(--body-bg);
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.HeaderMega--rails .HeaderMega-cat {
+  padding-left: 14px;
+  border-left: 3px solid var(--hm-accent);
+}
+
+.HeaderMega--bands .HeaderMega-catTitle {
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: var(--text-color);
+  background: ~"color-mix(in srgb, var(--hm-accent) 14%, transparent)";
+}
+
+.HeaderMega--underline .HeaderMega-catTitle {
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--hm-accent);
+  color: var(--text-color);
+}
+
+// Title bands: solid, or fading out across the category.
+.HeaderMega--band-solid,
+.HeaderMega--band-gradient {
+  .HeaderMega-catTitle {
+    padding: 8px 12px;
+    border-radius: 8px;
+
+    &,
+    .icon {
+      color: #fff;
+    }
+  }
+}
+
+.HeaderMega--band-solid .HeaderMega-catTitle {
+  background: var(--hm-accent);
+}
+
+.HeaderMega--band-gradient .HeaderMega-catTitle {
+  background: linear-gradient(90deg, var(--hm-accent), ~"color-mix(in srgb, var(--hm-accent) 25%, transparent)");
+}
+
+/*
+ * ── Textures ──
+ *
+ * 🚨 Pure CSS: gradients drawn in the text colour, or a few bytes of inline
+ * SVG in a neutral grey, on a layer behind the content. Nothing is fetched,
+ * and the strength is that layer's opacity, so one custom property sets it.
+ */
+.HeaderMega--tex::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  color: var(--text-color);
+  opacity: calc(var(--hm-tex) * var(--hm-tex-k, 0.16));
+  background: var(--hm-tex-img);
+  background-size: var(--hm-tex-size, auto);
+}
+
+@hm-svg: ~"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'";
+
+.HeaderMega--tex-grain {
+  --hm-tex-k: 0.5;
+  --hm-tex-img: url("@{hm-svg} width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.HeaderMega--tex-paper {
+  --hm-tex-k: 0.45;
+  --hm-tex-img: url("@{hm-svg} width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.035' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.HeaderMega--tex-linen {
+  --hm-tex-img: repeating-linear-gradient(0deg, currentColor 0 1px, transparent 1px 4px), repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 5px);
+  --hm-tex-k: 0.1;
+}
+
+.HeaderMega--tex-dots {
+  --hm-tex-img: radial-gradient(currentColor 1px, transparent 1.6px);
+  --hm-tex-size: 14px 14px;
+}
+
+.HeaderMega--tex-weave {
+  --hm-tex-img: repeating-linear-gradient(45deg, currentColor 0 2px, transparent 2px 9px), repeating-linear-gradient(-45deg, ~"color-mix(in srgb, currentColor 50%, transparent)" 0 1px, transparent 1px 9px);
+}
+
+.HeaderMega--tex-graph {
+  --hm-tex-img: linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px);
+  --hm-tex-size: 22px 22px;
+}
+
+.HeaderMega--tex-brushed {
+  --hm-tex-img: repeating-linear-gradient(0deg, currentColor 0 1px, transparent 1px 3px, ~"color-mix(in srgb, currentColor 40%, transparent)" 3px 4px, transparent 4px 7px);
+  --hm-tex-k: 0.12;
+}
+
+.HeaderMega--tex-contour {
+  --hm-tex-img: repeating-radial-gradient(circle at 18% 28%, transparent 0 15px, currentColor 15px 16px), repeating-radial-gradient(circle at 82% 90%, transparent 0 21px, currentColor 21px 22px);
+  --hm-tex-k: 0.12;
+}
+
+.HeaderMega--tex-canvas {
+  --hm-tex-img: repeating-linear-gradient(45deg, currentColor 0 1px, transparent 1px 3px), repeating-linear-gradient(-45deg, currentColor 0 1px, transparent 1px 3px);
+  --hm-tex-k: 0.08;
+}
+
+.HeaderMega--tex-crosshatch {
+  --hm-tex-img: repeating-linear-gradient(45deg, currentColor 0 1px, transparent 1px 11px), repeating-linear-gradient(-45deg, currentColor 0 1px, transparent 1px 11px);
+}
+
+.HeaderMega--tex-herringbone {
+  --hm-tex-img: url("@{hm-svg} width='40' height='20'%3E%3Cpath d='M0 10 10 0l10 10L30 0l10 10M0 20l10-10 10 10 10-10 10 10' fill='none' stroke='%23808080'/%3E%3C/svg%3E");
+  --hm-tex-k: 0.22;
+}
+
+.HeaderMega--tex-honeycomb {
+  --hm-tex-img: url("@{hm-svg} width='17.32' height='30'%3E%3Cpath d='M0 5 8.66 0l8.66 5v10L8.66 20 0 15zM8.66 20v10' fill='none' stroke='%23808080'/%3E%3C/svg%3E");
+  --hm-tex-k: 0.22;
+}
+
+.HeaderMega--tex-waves {
+  --hm-tex-img: url("@{hm-svg} width='48' height='16'%3E%3Cpath d='M0 8q12-8 24 0t24 0' fill='none' stroke='%23808080'/%3E%3C/svg%3E");
+  --hm-tex-k: 0.22;
+}
+
+/*
+ * ── Opening in place ──
+ *
+ * In the phone drawer and the header's "…" menu (where JS sets --inline), and
+ * in the editor's phone preview, the panel is an expanding section of the
+ * list: one column, no card, no fixed position.
+ */
+.HeaderMega--inline .HeaderMega-panel,
+.HeaderMega-phone .HeaderMega-panel {
+  --hm-cols: 1 !important;
+  --hm-gap: 12px;
+  position: relative;
+  width: auto;
+  max-height: none;
+  margin: 2px 0 8px;
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: none;
+
+  .HeaderMega-close {
+    display: none;
+  }
+
+  .HeaderMega-search {
+    flex: 1 1 100%;
+  }
+
+  .HeaderMega-col + .HeaderMega-col {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  &.HeaderMega--dividers .HeaderMega-col + .HeaderMega-col {
+    padding-top: var(--hm-gap);
+    border-top: var(--hm-div) solid var(--hm-div-color, var(--control-bg));
+  }
+}
+
+.HeaderMega--inline {
+  display: block;
+}
+
+.Dropdown-menu .HeaderMega-panel {
+  min-width: 260px;
+}
+
+// Core hangs the "…" menu leftwards from its toggle; widened by an open
+// section it would run off the screen, so it hangs rightwards meanwhile.
+.OverflowingList-dropdown .Dropdown-menu:has(.HeaderMega--inline) {
+  right: auto;
+  left: 0;
+}
+
+@media (max-width: 767.98px) {
+  .App-drawer .HeaderMega {
+    display: block;
+  }
+
+  .App-drawer .HeaderMega-caret {
+    margin-left: auto;
+  }
+}
+
+/*
+ * ── The phone drawer's folded section ──
+ *
+ * The drawer is the logo, then Flarum's search and account controls, then this
+ * one row. It opens downwards into the header links, and each mega menu opens
+ * in place inside it (see MegaPanel's inline mode).
+ */
+@media (max-width: 767.98px) {
+  // Nothing is added to HeaderPrimary on a phone any more; without this its
+  // empty list still carried the drawer's 10px top margin.
+  .App-drawer .Header-primary .Header-controls:empty {
+    display: none;
+  }
+
+  // The drawer is the whole menu. With the section opened it can grow past the
+  // screen, so let the drawer scroll instead of losing its last links.
+  .App-drawer:has(.HeaderNav-mobile) {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .App-drawer .HeaderNav-mobile {
+    margin-top: 10px;
+    border-top: 1px solid var(--control-bg);
+  }
+
+  .App-drawer .HeaderNav-mobileToggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 13px;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    color: var(--header-control-color);
+    font: inherit;
+    font-weight: 600;
+    text-align: start;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      background: ~"color-mix(in srgb, currentColor 12%, transparent)";
+      color: var(--header-control-color);
+      text-decoration: none;
+    }
+  }
+
+  .App-drawer .HeaderNav-mobileCaret {
+    margin-inline-start: auto;
+    font-size: 0.8em;
+    opacity: 0.65;
+  }
+
+  .App-drawer .HeaderNav-mobileToggle .HeaderNav-label,
+  .App-drawer .HeaderNav-mobileItem .HeaderNav-label {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .App-drawer .HeaderNav-mobileList {
+    list-style: none;
+    margin: 0 0 10px;
+    padding: 0;
+  }
+
+  .App-drawer .HeaderNav-mobileItem .HeaderNav-link {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 10px 13px 10px 33px;
+    // The header row's links are pills with their own size and weight; in the
+    // drawer they are ordinary rows under the native ones, not another
+    // heading, so they take the drawer's type instead.
+    font-size: inherit;
+    font-weight: normal;
+  }
+}
